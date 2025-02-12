@@ -87,9 +87,9 @@ def send_spreadsheet(sender_email, sender_password, recipient_email):
 # Example usage
 if __name__ == "__main__":
     # Replace these with your actual email credentials
-    SENDER_EMAIL = "2k22.csai.2213601@gmail.com"
+    SENDER_EMAIL = "2k22.csai.2213601@gmail.com" # Write a Sender Gmail
     SENDER_PASSWORD = "taem fumr twcm wbvi"  # Use App Password for Gmail
-    RECIPIENT_EMAIL = "2k22.csai.2213601@gmail.com"
+    RECIPIENT_EMAIL = "2k22.csai.2213601@gmail.com" # Write a Recipient Gmail
     
     result = send_spreadsheet(SENDER_EMAIL, SENDER_PASSWORD, RECIPIENT_EMAIL)
     print(result)
