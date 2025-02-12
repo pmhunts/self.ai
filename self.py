@@ -7,33 +7,50 @@ import os
 from datetime import datetime
 
 def create_spreadsheet():
-    """Create a sample DSA spreadsheet"""
-    data = {
+    """Create a sample DSA spreadsheet 1"""
+    data1 = {
         'Month': ['January', 'February', 'March'],
-        'Question ': [600, 650, 0],
-        'Topics': [8, 6, 0],
-        'Topics done': [3000, 600, 0],
-        'total topics': [14, 6, 0],
+        'Question ': [600, 650, 500],
+        'Topics': [8, 6, 4],
+        'Topics done': [3000, 600, 400],
+        'total topics': [14, 6, 8],
         'Total Question': [0, 0, 0]
     }
-    df = pd.DataFrame(data)
-    return df
+    df1 = pd.DataFrame(data1)
+    return df1
+def create_spreadsheet1():
+    """Create a sample DSA spreadsheet 2"""
+    data2 = {
+        'Month': ['April', 'May', 'June'],
+        'Question ': [0, 0, 0],
+        'Topics': [0, 0, 0],
+        'Topics done': [0, 0, 0],
+        'total topics': [0, 0, 0],
+        'Total Question': [0, 0, 0]
+    }
+    df2 = pd.DataFrame(data2)
+    return df2
 
 def send_spreadsheet(sender_email, sender_password, recipient_email):
     """Send spreadsheet via email"""
     try:
         # Create the spreadsheet
-        df = create_spreadsheet()
+        df1 = create_spreadsheet()
+        df2 = create_spreadsheet1()
         
         # Save to CSV
         filename = f"DSA_Report_{datetime.now().strftime('%Y%m%d')}.csv"
-        df.to_csv(filename, index=False)
+        df1.to_csv(filename, index=False)
+        df2.to_csv(filename, mode='a', header=False, index=False)
 
+        
+        # Create email
         msg = MIMEMultipart()
         msg['From'] = sender_email
         msg['To'] = recipient_email
         msg['Subject'] = "DSA Spreadsheet Report"
         
+        # Email body
         body = """
         Hello,
 
@@ -67,11 +84,12 @@ def send_spreadsheet(sender_email, sender_password, recipient_email):
     except Exception as e:
         return f"Error sending email: {str(e)}"
 
+# Example usage
 if __name__ == "__main__":
     # Replace these with your actual email credentials
-    SENDER_EMAIL = "2k22.csai.2213601@gmail.com" # add your own Gmail
-    SENDER_PASSWORD = "essf hfqm khco sfep"  # Use App Password for Gmail
-    RECIPIENT_EMAIL = "2k22.csai.2213601@gmail.com" # add recipient Gmail
+    SENDER_EMAIL = "2k22.csai.2213601@gmail.com"
+    SENDER_PASSWORD = "taem fumr twcm wbvi"  # Use App Password for Gmail
+    RECIPIENT_EMAIL = "2k22.csai.2213601@gmail.com"
     
     result = send_spreadsheet(SENDER_EMAIL, SENDER_PASSWORD, RECIPIENT_EMAIL)
     print(result)
