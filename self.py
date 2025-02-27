@@ -4,40 +4,88 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 import os
+import requests
+
 from datetime import datetime
 
-def create_spreadsheet():
-    """Create a sample DSA spreadsheet"""
-    data = {
+def create_spreadsheet(leetcode_data):
+    """Create a sample DSA spreadsheet 1"""
+    data1 = {
         'Month': ['January', 'February', 'March'],
-        'Question ': [600, 650, 0],
-        'Topics': [8, 6, 0],
-        'Topics done': [3000, 600, 0],
-        'total topics': [14, 6, 0],
+        'Question ': [600, 650, 500],
+        'Topics': [8, 6, 4],
+        'Topics done': [3000, 600, 400],
+        'total topics': [14, 6, 8],
         'Total Question': [0, 0, 0]
     }
-    df = pd.DataFrame(data)
-    return df
+    df1 = pd.DataFrame(data1)
+    # Include LeetCode data in the spreadsheet
+    leetcode_df = pd.DataFrame(leetcode_data['stat_status_pairs'])
+    df1 = pd.concat([df1, leetcode_df], axis=1)
+    return df1
 
-def send_spreadsheet(sender_email, sender_password, recipient_email):
-    """Send spreadsheet via email"""
+def create_spreadsheet1():
+    """Create a sample DSA spreadsheet 2"""
+    data2 = {
+        'Month': ['April', 'May', 'June'],
+        'Question ': [0, 0, 0],
+        'Topics': [0, 0, 0],
+        'Topics done': [0, 0, 0],
+        'total topics': [0, 0, 0],
+        'Total Question': [0, 0, 0]
+    }
+    df2 = pd.DataFrame(data2)
+    return df2
+
+def create_spreadsheet2():
+    """Create a sample DSA spreadsheet 3"""
+    data3 = {
+        'Month': ['July', 'August', 'September'],
+        'Question ': [0, 0, 0],
+        'Topics': [0, 0, 0],
+        'Topics done': [0, 0, 0],
+        'total topics': [0, 0, 0],
+        'Total Question': [0, 0, 0]
+    }
+    df3 = pd.DataFrame(data3)
+    return df3
+
+def fetch_leetcode_data():
+    """Fetch data from LeetCode API with error handling"""
+    url = "https://leetcode.com/api/problems/all/"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an error for bad responses
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        return {"error": str(e)}
+
+def send_spreadsheet(sender_email, sender_password, recipient_email, leetcode_data):
+    """Send spreadsheet via email with error handling"""
     try:
         # Create the spreadsheet
-        df = create_spreadsheet()
+        df1 = create_spreadsheet(leetcode_data)
+        df2 = create_spreadsheet1()
+        df3 = create_spreadsheet2()
         
         # Save to CSV
         filename = f"DSA_Report_{datetime.now().strftime('%Y%m%d')}.csv"
-        df.to_csv(filename, index=False)
-
+        df1.to_csv(filename, index=False)
+        df2.to_csv(filename, mode='a', header=False, index=False)
+        df3.to_csv(filename, mode='a', header=False, index=False)
+        
+        # Create email
         msg = MIMEMultipart()
         msg['From'] = sender_email
         msg['To'] = recipient_email
         msg['Subject'] = "DSA Spreadsheet Report"
         
+        # Email body
         body = """
         Hello,
 
         Please find attached the DSA spreadsheet report.
+        "Happy coding"
 
         Best regards,
         Your Automated System
@@ -57,21 +105,22 @@ def send_spreadsheet(sender_email, sender_password, recipient_email):
         # Login and send email
         server.login(sender_email, sender_password)
         server.send_message(msg)
-        server.quit()
         
         # Clean up temporary file
         os.remove(filename)
         
-        return "Email sent successfully!"
-    
+        return "Email sent successfully!"  # Success message
     except Exception as e:
-        return f"Error sending email: {str(e)}"
+        return f"Error: {str(e)}"  # Error message
+    finally:
+        server.quit()  # Ensure server is closed
 
+# Example usage
 if __name__ == "__main__":
     # Replace these with your actual email credentials
-    SENDER_EMAIL = "2k22.csai.2213601@gmail.com" # add your own Gmail
-    SENDER_PASSWORD = "essf hfqm khco sfep"  # Use App Password for Gmail
-    RECIPIENT_EMAIL = "2k22.csai.2213601@gmail.com" # add recipient Gmail
+    SENDER_EMAIL = "2k22.csai.2213601@gmail.com"
+    SENDER_PASSWORD = "hfwk yehy tofn xkzx"  # Use App Password for Gmail
+    RECIPIENT_EMAIL = "2k22.csai.2213601@gmail.com"
     
-    result = send_spreadsheet(SENDER_EMAIL, SENDER_PASSWORD, RECIPIENT_EMAIL)
+    result = send_spreadsheet(SENDER_EMAIL, SENDER_PASSWORD, RECIPIENT_EMAIL, fetch_leetcode_data())
     print(result)
