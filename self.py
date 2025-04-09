@@ -5,14 +5,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 import os
 import requests
-
 from datetime import datetime
 
-<<<<<<< HEAD
 def create_spreadsheet(leetcode_data):
-=======
-def create_spreadsheet():
->>>>>>> af2f44fefeb7e900e6e2d087eb2e23874ec6d69d
+ def create_spreadsheet():
     """Create a sample DSA spreadsheet 1"""
     data1 = {
         'Month': ['January', 'February', 'March'],
@@ -23,28 +19,14 @@ def create_spreadsheet():
         'Total Question': [0, 0, 0]
     }
     df1 = pd.DataFrame(data1)
-<<<<<<< HEAD
     # Include LeetCode data in the spreadsheet
     leetcode_df = pd.DataFrame(leetcode_data['stat_status_pairs'])
     df1 = pd.concat([df1, leetcode_df], axis=1)
     return df1
-=======
+
     return df1
-def create_spreadsheet1():
-    """Create a sample DSA spreadsheet 2"""
-    data2 = {
-        'Month': ['April', 'May', 'June'],
-        'Question ': [0, 0, 0],
-        'Topics': [0, 0, 0],
-        'Topics done': [0, 0, 0],
-        'total topics': [0, 0, 0],
-        'Total Question': [0, 0, 0]
-    }
-    df2 = pd.DataFrame(data2)
-    return df2
->>>>>>> af2f44fefeb7e900e6e2d087eb2e23874ec6d69d
 
-def create_spreadsheet1():
+ def create_spreadsheet1():
     """Create a sample DSA spreadsheet 2"""
     data2 = {
         'Month': ['April', 'May', 'June'],
@@ -57,7 +39,7 @@ def create_spreadsheet1():
     df2 = pd.DataFrame(data2)
     return df2
 
-def create_spreadsheet2():
+ def create_spreadsheet2():
     """Create a sample DSA spreadsheet 3"""
     data3 = {
         'Month': ['July', 'August', 'September'],
@@ -84,24 +66,19 @@ def send_spreadsheet(sender_email, sender_password, recipient_email, leetcode_da
     """Send spreadsheet via email with error handling"""
     try:
         # Create the spreadsheet
-<<<<<<< HEAD
+
         df1 = create_spreadsheet(leetcode_data)
         df2 = create_spreadsheet1()
         df3 = create_spreadsheet2()
-=======
+
         df1 = create_spreadsheet()
         df2 = create_spreadsheet1()
->>>>>>> af2f44fefeb7e900e6e2d087eb2e23874ec6d69d
         
         # Save to CSV
         filename = f"DSA_Report_{datetime.now().strftime('%Y%m%d')}.csv"
         df1.to_csv(filename, index=False)
         df2.to_csv(filename, mode='a', header=False, index=False)
-<<<<<<< HEAD
         df3.to_csv(filename, mode='a', header=False, index=False)
-=======
-
->>>>>>> af2f44fefeb7e900e6e2d087eb2e23874ec6d69d
         
         # Create email
         msg = MIMEMultipart()
@@ -146,18 +123,14 @@ def send_spreadsheet(sender_email, sender_password, recipient_email, leetcode_da
 
 # Example usage
 if __name__ == "__main__":
-    # Replace these with your actual email credentials
-<<<<<<< HEAD
     SENDER_EMAIL = "2k22.csai.2213601@gmail.com"
     SENDER_PASSWORD = "hfwk yehy tofn xkzx"  # Use App Password for Gmail
     RECIPIENT_EMAIL = "2k22.csai.2213601@gmail.com"
     
     result = send_spreadsheet(SENDER_EMAIL, SENDER_PASSWORD, RECIPIENT_EMAIL, fetch_leetcode_data())
-=======
     SENDER_EMAIL = "2k22.csai.2213601@gmail.com" # Write a Sender Gmail
     SENDER_PASSWORD = "taem fumr twcm wbvi"  # Use App Password for Gmail
     RECIPIENT_EMAIL = "2k22.csai.2213601@gmail.com" # Write a Recipient Gmail
     
     result = send_spreadsheet(SENDER_EMAIL, SENDER_PASSWORD, RECIPIENT_EMAIL)
->>>>>>> af2f44fefeb7e900e6e2d087eb2e23874ec6d69d
     print(result)
